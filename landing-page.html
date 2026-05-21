@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analisis WebQual 4.0 — Evaluasi Kualitas Website</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #0D1B3E;
+      --blue: #1A56DB;
+      --sky: #3B82F6;
+      --accent: #F59E0B;
+      --light: #EFF6FF;
+      --white: #FFFFFF;
+      --gray: #64748B;
+      --text: #1E293B;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(13, 27, 62, 0.96);
+      backdrop-filter: blur(10px);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-brand {
+      font-family: 'DM Serif Display', serif;
+      color: var(--white);
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-brand span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0D1B3E 0%, #1A3A6B 55%, #0D1B3E 100%);
+      display: flex;
+      align-items: center;
+      padding: 100px 5% 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(59, 130, 246, 0.18) 0%, transparent 70%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 1) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 700px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--navy);
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245, 158, 11, 0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 13px 28px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      position: absolute;
+      bottom: 48px;
+      right: 5%;
+      display: flex;
+      gap: 2px;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      padding: 20px 28px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .stat-card:first-child {
+      border-radius: 12px 0 0 12px;
+    }
+
+    .stat-card:last-child {
+      border-radius: 0 12px 12px 0;
+    }
+
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 80px 5%;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: var(--navy);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      color: var(--gray);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    /* ─── ABOUT ─── */
+    .about {
+      background: var(--light);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-visual {
+      position: relative;
+      padding: 20px;
+    }
+
+    .about-card-main {
+      background: var(--navy);
+      border-radius: 16px;
+      padding: 36px;
+      color: var(--white);
+    }
+
+    .about-card-main h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .about-card-main p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .about-float {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      background: var(--accent);
+      color: var(--navy);
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-weight: 800;
+      font-size: 1.5rem;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+    }
+
+    .about-float small {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* ─── DIMENSI WebQual ─── */
+    .dimensions {
+      background: var(--white);
+    }
+
+    .dim-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 2.5rem auto 0;
+    }
+
+    .dim-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 28px;
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dim-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .dim-card.c1::before {
+      background: #3B82F6;
+    }
+
+    .dim-card.c2::before {
+      background: #10B981;
+    }
+
+    .dim-card.c3::before {
+      background: #F59E0B;
+    }
+
+    .dim-card.c4::before {
+      background: #EF4444;
+    }
+
+    .dim-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .dim-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.75rem;
+    }
+
+    .dim-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .dim-card p {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    .dim-items {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--light);
+      color: var(--blue);
+    }
+
+    /* ─── METODE ─── */
+    .method {
+      background: var(--navy);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .method .section-title {
+      color: var(--white);
+    }
+
+    .method .section-sub {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .method-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2px;
+      margin: 3rem auto 0;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .step {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 28px 24px;
+      transition: background 0.2s;
+    }
+
+    .step:first-child {
+      border-radius: 12px 0 0 12px;
+    }
+
+    .step:last-child {
+      border-radius: 0 12px 12px 0;
+    }
+
+    .step:hover {
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .step-n {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .step h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+
+    .step p {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.65;
+    }
+
+    /* ─── KUESIONER ─── */
+    .survey {
+      background: var(--light);
+    }
+
+    .survey-intro {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 1.5rem;
+    }
+
+    .scale-box {
+      flex: 1;
+      border-radius: 10px;
+      padding: 14px 8px;
+      text-align: center;
+    }
+
+    .scale-box .num {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .scale-box .lbl {
+      font-size: 0.65rem;
+      font-weight: 600;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .scale-box.s1 {
+      background: #FEE2E2;
+      color: #B91C1C;
+    }
+
+    .scale-box.s2 {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .scale-box.s3 {
+      background: #F1F5F9;
+      color: #475569;
+    }
+
+    .scale-box.s4 {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .scale-box.s5 {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    .question-preview {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .question-preview h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1.2rem;
+    }
+
+    .q-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #F1F5F9;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .q-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .q-code {
+      background: var(--navy);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+
+    .q-text {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .q-dim {
+      font-size: 0.72rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    .cta-survey {
+      margin-top: 2rem;
+      background: var(--blue);
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(26, 86, 219, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-survey:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(26, 86, 219, 0.5);
+    }
+
+    /* ─── TENTANG ─── */
+    .profile {
+      background: var(--white);
+    }
+
+    .profile-card {
+      max-width: 600px;
+      margin: 2rem auto 0;
+      background: var(--navy);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--navy);
+    }
+
+    .profile-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-card .nim {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .profile-card p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.7;
+    }
+
+    .profile-tags {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .profile-tags .ptag {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--navy);
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      padding: 32px 5%;
+      font-size: 0.82rem;
+    }
+
+    footer strong {
+      color: var(--accent);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+
+      .about-grid,
+      .survey-intro {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .hero-stats {
+        position: static;
+        margin-top: 3rem;
+      }
+
+      .hero {
+        flex-direction: column;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .method-steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .step:first-child,
+      .step:last-child {
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-brand">Web<span>Qual</span> 4.0</div>
+    <ul class="nav-links">
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#dimensi">Dimensi</a></li>
+      <li><a href="#metode">Metode</a></li>
+      <li><a href="#kuesioner">Kuesioner</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle cx="6" cy="6" r="5" stroke="#F59E0B" stroke-width="1.5" />
+          <path d="M4 6l1.5 1.5L8 4" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Tugas Akhir — Analisis Kualitas Website
+      </div>
+      <h1>Mengukur Kualitas<br />Layanan Website<br />dengan <em>WebQual 4.0</em></h1>
+      <p class="hero-desc">
+        Penelitian ini mengevaluasi kualitas layanan website berdasarkan persepsi pengguna menggunakan metode WebQual
+        4.0 yang mencakup empat dimensi utama kualitas website.
+      </p>
+      <div class="hero-actions">
+        <a href="#kuesioner" class="btn-primary">Isi Kuesioner</a>
+        <a href="#metode" class="btn-outline">Pelajari Metode</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">22</div>
+        <div class="stat-lbl">Pernyataan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4</div>
+        <div class="stat-lbl">Dimensi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-lbl">Skala Likert</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TENTANG -->
+  <section class="about" id="tentang">
+    <div class="about-grid">
+      <div>
+        <div class="section-tag">Tentang Penelitian</div>
+        <h2 class="section-title">Apa itu WebQual 4.0?</h2>
+        <p class="section-sub">
+          WebQual 4.0 adalah metode pengukuran kualitas website yang dikembangkan oleh Barnes & Vidgen (2002). Metode
+          ini mengevaluasi kualitas website dari sudut pandang pengguna melalui tiga dimensi utama ditambah kesan
+          keseluruhan.
+        </p>
+        <p class="section-sub" style="margin-top:1rem;">
+          Pendekatan ini memungkinkan organisasi untuk memahami seberapa baik website mereka memenuhi kebutuhan dan
+          harapan pengguna secara komprehensif.
+        </p>
+      </div>
+      <div class="about-visual">
+        <div class="about-card-main">
+          <h3>Tujuan Penelitian</h3>
+          <p>Mengevaluasi dan mengukur kualitas website menggunakan instrumen WebQual 4.0 untuk mengidentifikasi dimensi
+            terkuat dan terlemah, serta memberikan rekomendasi perbaikan berbasis data yang dikumpulkan dari responden
+            nyata.</p>
+        </div>
+        <div class="about-float">
+          4.0<small>WebQual</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIMENSI -->
+  <section class="dimensions" id="dimensi">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="section-tag">Instrumen Penelitian</div>
+      <h2 class="section-title">Dimensi WebQual 4.0</h2>
+      <p class="section-sub">Empat dimensi yang digunakan untuk mengukur kualitas website secara menyeluruh dari
+        perspektif pengguna.</p>
+    </div>
+    <div class="dim-grid">
+      <div class="dim-card c1">
+        <div class="dim-num">Dimensi 01</div>
+        <h3>Usability</h3>
+        <p>Kemudahan penggunaan dan navigasi website, termasuk tampilan antarmuka dan pengalaman pengguna secara
+          keseluruhan.</p>
+        <div class="dim-items">
+          <span class="tag">Ease of Learning</span>
+          <span class="tag">Navigasi</span>
+          <span class="tag">Daya Tarik</span>
+          <span class="tag">User Experience</span>
+        </div>
+      </div>
+      <div class="dim-card c2">
+        <div class="dim-num">Dimensi 02</div>
+        <h3>Information Quality</h3>
+        <p>Kualitas informasi yang disediakan oleh website, termasuk akurasi, kemutakhiran, relevansi, dan kelengkapan
+          informasi.</p>
+        <div class="dim-items">
+          <span class="tag">Keakuratan</span>
+          <span class="tag">Relevansi</span>
+          <span class="tag">Kelengkapan</span>
+          <span class="tag">Format</span>
+        </div>
+      </div>
+      <div class="dim-card c3">
+        <div class="dim-num">Dimensi 03</div>
+        <h3>Service Interaction</h3>
+        <p>Kualitas interaksi layanan yang dialami pengguna, mencakup kepercayaan, keamanan, dan kemudahan komunikasi.
+        </p>
+        <div class="dim-items">
+          <span class="tag">Keamanan Data</span>
+          <span class="tag">Kepercayaan</span>
+          <span class="tag">Personalisasi</span>
+          <span class="tag">Komunitas</span>
+        </div>
+      </div>
+      <div class="dim-card c4">
+        <div class="dim-num">Dimensi 04</div>
+        <h3>Overall Impression</h3>
+        <p>Kesan dan kepuasan pengguna secara keseluruhan terhadap website yang dievaluasi.</p>
+        <div class="dim-items">
+          <span class="tag">Kesan Positif</span>
+          <span class="tag">Kepuasan</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METODE -->
+  <section class="method" id="metode">
+    <div style="max-width:1100px;margin:0 auto;width:100%;">
+      <div class="section-tag" style="color:var(--accent);">Alur Penelitian</div>
+      <h2 class="section-title">Metode Pengumpulan Data</h2>
+      <p class="section-sub">Penelitian dilakukan secara sistematis melalui beberapa tahapan terstruktur.</p>
+    </div>
+    <div class="method-steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <h4>Penyusunan Instrumen</h4>
+        <p>Menyusun kuesioner berdasarkan dimensi WebQual 4.0 sesuai rubrik yang ditetapkan.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <h4>Pengumpulan Data</h4>
+        <p>Menyebarkan kuesioner kepada minimal 7 responden yang merupakan pengguna nyata website.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <h4>Skoring & Tabulasi</h4>
+        <p>Menghitung skor tiap dimensi menggunakan skala Likert 1–5 untuk setiap pernyataan.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">04</div>
+        <h4>Analisis Data</h4>
+        <p>Mengidentifikasi dimensi terkuat dan terlemah serta menarik kesimpulan dari data.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">05</div>
+        <h4>Rekomendasi</h4>
+        <p>Memberikan rekomendasi perbaikan berdasarkan hasil analisis WebQual 4.0.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KUESIONER -->
+  <section class="survey" id="kuesioner">
+    <div class="survey-intro">
+      <div>
+        <div class="section-tag">Partisipasi</div>
+        <h2 class="section-title">Isi Kuesioner Penelitian</h2>
+        <p class="section-sub">
+          Bantu penelitian ini dengan mengisi kuesioner evaluasi kualitas website. Jawaban Anda akan digunakan untuk
+          menganalisis kualitas layanan berdasarkan metode WebQual 4.0.
+        </p>
+        <p class="section-sub" style="margin-top:0.75rem;">Pengisian kuesioner membutuhkan waktu sekitar <strong
+            style="color:var(--navy)">3–5 menit</strong> dan terdiri dari 22 pernyataan.</p>
+
+        <div class="scale-row">
+          <div class="scale-box s1">
+            <div class="num">1</div>
+            <div class="lbl">STS</div>
+          </div>
+          <div class="scale-box s2">
+            <div class="num">2</div>
+            <div class="lbl">TS</div>
+          </div>
+          <div class="scale-box s3">
+            <div class="num">3</div>
+            <div class="lbl">N</div>
+          </div>
+          <div class="scale-box s4">
+            <div class="num">4</div>
+            <div class="lbl">S</div>
+          </div>
+          <div class="scale-box s5">
+            <div class="num">5</div>
+            <div class="lbl">SS</div>
+          </div>
+        </div>
+
+        <a href="https://forms.gle/1NMq33ydkUtQtsHE6" class="cta-survey" style="margin-top:2rem;" target="_blank"
+          rel="noopener noreferrer">
+          → Isi Kuesioner Sekarang
+        </a>
+      </div>
+
+      <div class="question-preview">
+        <h4>Preview Pernyataan</h4>
+
+        <div class="q-item">
+          <span class="q-code">U1</span>
+          <div>
+            <div class="q-text">Situs web ini mudah dipelajari dan dioperasikan oleh pengguna.</div>
+            <div class="q-dim">Usability · Ease of Learning</div>
+          </div>
+        </div>
+        <div class="q-item">
+          <span class="q-code">U3</span>
+          <div>
+            <div class="q-text">Situs web ini mudah untuk dinavigasi dari satu halaman ke halaman lain.</div>
+            <div class="q-dim">Usability · Navigasi</div>
+          </div>
+        </div>
+        <div class="q-item">
+          <span class="q-code">IQ1</span>
+          <div>
+            <div class="q-text">Informasi yang disajikan pada situs web ini akurat dan dapat dipercaya.</div>
+            <div class="q-dim">Information Quality · Keakuratan</div>
+          </div>
+        </div>
+        <div class="q-item">
+          <span class="q-code">SI2</span>
+          <div>
+            <div class="q-text">Situs web ini menjamin keamanan data pribadi dan informasi pengguna.</div>
+            <div class="q-dim">Service Interaction · Keamanan Data Pribadi</div>
+          </div>
+        </div>
+        <div class="q-item">
+          <span class="q-code">OI1</span>
+          <div>
+            <div class="q-text">Secara keseluruhan, situs web ini memberikan kesan yang positif bagi pengguna.</div>
+            <div class="q-dim">Overall Impression · Kesan Keseluruhan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFIL -->
+  <section class="profile" id="profil">
+    <div style="text-align:center;">
+      <div class="section-tag">Peneliti</div>
+      <h2 class="section-title">Tentang Peneliti</h2>
+    </div>
+    <div class="profile-card">
+      <div class="avatar">R</div>
+      <h3>Ramadhan Pratama</h3>
+      <div class="nim">NIM: 224443090 · Kelas 2AEC4</div>
+      <p>Mahasiswa Program Studi Teknologi Rekayasa Informatika Industri yang melakukan penelitian evaluasi kualitas
+        website menggunakan metode WebQual 4.0 sebagai bagian dari Tugas Akhir Mata Kuliah Antarmuka Mesin dan Manusia.</p>
+      <div class="profile-tags">
+        <span class="ptag">WebQual 4.0</span>
+        <span class="ptag">UX Research</span>
+        <span class="ptag">Web Quality</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <strong>Ramadhan Pratama</strong> — Penelitian WebQual 4.0 · Program Studi Teknologi Rekayasa Informatika
+      Industri</p>
+    <p style="margin-top:0.5rem; font-size:0.75rem;">Instrumen berdasarkan: Barnes & Vidgen (2002) — WebQual 4.0</p>
+  </footer>
+
+</body>
+
+</html>
